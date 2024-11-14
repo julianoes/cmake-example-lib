@@ -3,7 +3,9 @@ cmake_minimum_required(VERSION 3.16)
 project(example-lib
     LANGUAGES CXX)
 
-add_library(${PROJECT_NAME})
+include(GNUInstallDirs)
+
+add_library(${PROJECT_NAME} SHARED)
 target_sources(${PROJECT_NAME} PRIVATE src/example-lib.cpp)
 
 target_include_directories(
