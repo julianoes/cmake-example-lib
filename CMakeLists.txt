@@ -1,0 +1,29 @@
+cmake_minimum_required(VERSION 3.16)
+
+project(example-lib
+    LANGUAGES CXX)
+
+add_library(${PROJECT_NAME})
+target_sources(${PROJECT_NAME} PRIVATE src/example-lib.cpp)
+
+target_include_directories(
+    ${PROJECT_NAME}
+    PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>
+           $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
+
+install(
+    TARGETS ${PROJECT_NAME}
+    EXPORT ${PROJECT_NAME}-config
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+install(
+    EXPORT ${PROJECT_NAME}-config
+    NAMESPACE ${PROJECT_NAME}::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
+
+install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/include/${PROJECT_NAME}/
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME})
